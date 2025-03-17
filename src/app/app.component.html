@@ -1,0 +1,41 @@
+<div class="container">
+  <h2>Generate Image</h2>
+
+  <!-- Toggle Mode Button -->
+  <mat-button-toggle-group [(ngModel)]="isFileMode" aria-label="Image Generation Mode">
+    <mat-button-toggle [value]="true">Upload File</mat-button-toggle>
+    <mat-button-toggle [value]="false">Generate Using Prompt</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <hr>
+
+  <!-- File Upload Section -->
+  <div *ngIf="isFileMode">
+    <input type="file" (change)="onFileSelected($event)" class="form-control">
+    <button (click)="uploadFile()" [disabled]="!selectedFile || isLoading" class="btn btn-primary mt-2">
+      Upload File
+    </button>
+  </div>
+
+  <!-- Text Prompt Section -->
+  <div *ngIf="!isFileMode">
+    <input type="text" [(ngModel)]="promptText" class="form-control" placeholder="Enter prompt here...">
+    <button (click)="generateImage()" [disabled]="!promptText.trim() || isLoading" class="btn btn-success mt-2">
+      Generate Image
+    </button>
+  </div>
+
+  <hr>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="spinner-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <p>Loading...</p>
+  </div>
+
+  <!-- Display Generated Image -->
+  <div *ngIf="imageUrl && !isLoading">
+    <h3>Generated Image:</h3>
+    <img [src]="imageUrl" alt="Generated Image" class="img-fluid rounded shadow">
+  </div>
+</div>
